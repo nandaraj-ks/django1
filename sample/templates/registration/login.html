@@ -1,0 +1,42 @@
+{% extends "sample/layout.html" %}
+{% block head %}
+
+{% endblock %}
+
+{% block loginContent %}
+<div class="loginContainer login">
+	<legend>Login</legend>
+    <div class="span12">
+        <form class="form-horizontal" role="form" method="POST" action="{% url 'django.contrib.auth.views.login' %}">
+        	{% csrf_token %}
+		  <div class="form-group">
+		    <label for="id_username" class="col-sm-2 control-label">Username</label>
+		    <div class="col-sm-10">
+		      {{ form.username }}
+		      {% if form.username.errors %}
+		      	<span class="error">{{form.username.errors}}</span>
+		      {% endif %}
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="id_password" class="col-sm-2 control-label">Password</label>
+		    <div class="col-sm-10">
+		      {{ form.password }}
+		      {% if form.password.errors %}
+		      	<span class="error">{{form.password.errors}}</span>
+		      {% endif %}
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-primary custom">Sign in</button>
+		      <a href="{% url 'sample.views.registerUser' %}">
+		      	Register
+		      </a>
+		      <input type="hidden" name="next" value="{{ next }}" />
+		    </div>
+		  </div>
+		</form>
+    </div>
+</div>
+{% endblock %}

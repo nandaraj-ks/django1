@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% load staticfiles %}
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Mooble Questionaire{% block title %} {% endblock %}</title>
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/mooble.css' %}" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="{% static 'js/bootstrap.js' %}"></script>
+	<script type="text/javascript" language="javascript" src="{% static 'js/mooble.js' %}"></script>
+	
+	{% block head %} {% endblock %}
+</head>
+<body>
+	<nav class="navbar custom navbar-default" role="navigation">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <a class="navbar-brand custom" href="{% url 'questions.views.viewQuestion' %}">Mooble Questionaire</a>
+	    </div>
+	    {% if request.user.is_authenticated %}
+	    	<div class="userContainer">
+		    	<div class="welcome">
+			    	<p class="navbar-text navbar-right custom">Welcome, 
+			    		<span class="username">{{request.user.username}}</span>
+			    		<a href="{% url 'django.contrib.auth.views.logout_then_login' %}?next={{request.path}}" class="navbar-link custom">Logout</a>
+		    		</p>
+		    	</div>
+	    	</div>
+	    {% endif  %}
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<br clear="all" />
+	<div class="fullContainer">
+		{% if not request.user.is_authenticated %}
+			<div class="halfContainer">
+				{% block loginContent %} {% endblock %}
+			</div>
+		{% else %}
+			<div class="fullContainer">
+	        	{% block content %} {% endblock %}
+	       	</div>
+	    {% endif %}
+	  </div> <!-- /container -->
+</body>

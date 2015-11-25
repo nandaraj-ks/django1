@@ -1,0 +1,102 @@
+{% extends "sample/layout.html" %}
+{% block title %} Question {% endblock %}
+{% load staticfiles %}
+{% block content %}
+	{% if question %}
+		<div class="question">
+			<div class="badge blue pull-left">Question {{questionNumber}}</div>
+			<div class="content">{{question.question}}</div>
+		</div>
+		<div class="choices">
+			<form class="form-horizontal" role="form" method="POST" action="{% url 'questions.views.viewQuestion' %}">
+				{% csrf_token %}
+				<div class="form-group">
+		    		<label class="col-sm-1 control-label">Choices</label>
+		   			<div class="col-sm-8">
+		      			{{ form.choiceSelect }}
+		      			{{form.questionHidden}}
+		      			{% if form.choiceSelect.errors %}
+		  					<span name="choiceSelect" class="error">{{form.choiceSelect.errors}}</span>
+		  				{% endif %}
+		    		</div>
+		  		</div>
+			  	<div class="form-group">
+			    	<div class="col-sm-10">
+			      		<button id="saveScheduleButton" class="btn btn-primary custom">Answer</button>
+			    	</div>
+			  	</div>
+		  </form>
+		</div>
+	{% else %}
+	<div class="question nomore alert alert-warning">
+		Oops! Looks like our Level {{subscriber.level}} question banks are empty.
+		<br clear="all" />
+		Our team will shortly prepare them for you.
+		<br clear="all" />
+		Please visit us after sometime.
+	</div>
+	{% endif %}
+	<div id="likeLinkToggle" class="likeLinkToggleButton">
+		<div class="likeContent">
+			S
+			<br clear="all" />
+			C
+			<br clear="all" />
+			O
+			<br clear="all" />
+			R
+			<br clear="all" />
+			E
+			<br clear="all" />
+			C
+			<br clear="all" />
+			A
+			<br clear="all" />
+			R
+			<br clear="all" />
+			D
+		</div>
+	</div>
+	<div id="notification" class="notification">
+		<div class="header">
+			<img src="{% static 'images/level.png' %}" />
+			You are on Level
+		</div>
+		<div class="content">
+			{% if subscriber.level <= 9 %}
+				0{{subscriber.level}}
+			{% else %}
+				{{subscriber.level}}
+			{% endif %}
+		</div>
+		<br clear="all" />
+		<div class="header">
+			<img src="{% static 'images/coins.png' %}" />
+			Your Mooble Points
+		</div>
+		<div class="content">
+			{% if subscriber.mooblePoint <= 9 %}
+				0{{subscriber.mooblePoint}}
+			{% else %}
+				{{subscriber.mooblePoint}}
+			{% endif %}
+		</div>
+		<br clear="all" />
+		<div class="header">
+			<img src="{% static 'images/runningMan.png' %}" />
+			Qns to next Level
+		</div>
+		<div class="content">
+			{% if questionsPending <= 9 %}
+				0{{questionsPending}}
+			{% else %}
+				{{questionsPending}}
+			{% endif %}
+		</div>
+	</div>
+	<script>
+		$('#likeLinkToggle').on('click', function () {
+			$('#notification').toggle(800);
+		});
+	</script>
+{% endblock %}
